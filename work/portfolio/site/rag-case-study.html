@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>RAG case study — notebook to live endpoint</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="site">
+    <span class="name">Siddiq</span>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="rag-case-study.html" class="active">Case study</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </header>
+
+  <h1>Notebook → live endpoint, on a GPU budget</h1>
+
+  <p>I built and deployed a RAG system under a hard GPU-credit budget on Lightning AI. First requests against
+    a cold instance were slow enough to time out — so I added a warm-up health check and retry-backoff in the
+    FastAPI layer, then published the before/after latency numbers instead of just claiming it works.</p>
+
+  <h2>System diagram</h2>
+  <pre>
+User
+  │  HTTPS (POST /query)
+  ▼
+FastAPI (retry + backoff on cold start)      ← error handling here
+  │
+  ├─ /healthz warm-up  → pre-loads model + index
+  ├─ Embedding step    → vector index, top-k retrieval
+  └─ Generation step   → LLM over retrieved context
+  ▼
+Lightning AI GPU server (budget-capped, cold-starts allowed)
+  ▼
+JSON response (answer + sources + latency stats)</pre>
+
+  <h2>Before / after (p50 / p95)</h2>
+  <table>
+    <tr><th>Metric</th><th>Before (no warm-up)</th><th>After (warm-up + retry)</th></tr>
+    <tr><td>First-request latency, cold instance</td><td>[p50] / [p95]</td><td>[p50] / [p95]</td></tr>
+    <tr><td>Steady-state latency</td><td>[p50] / [p95]</td><td>[p50] / [p95]</td></tr>
+    <tr><td>Timeout / 401 rate on cold start</td><td>[x%]</td><td>[y%]</td></tr>
+  </table>
+  <p class="muted">Percentiles, not averages — the tail is what users feel.</p>
+
+  <h2>The failure story</h2>
+  <p><strong>What broke:</strong> first requests against a cold instance were slow enough to time out before the
+    model was ready. The dashboard said uptime was fine; the first real user paid for it.</p>
+  <p><strong>What I changed:</strong> a <code>/healthz</code> warm-up path that pre-loads model + index; retry with
+    exponential backoff in the FastAPI layer; latency-percentile logging (p50/p95).</p>
+  <p><strong>What it cost:</strong> a small warm-up credit cost in exchange for ~[78]% cut in p95 first-request
+    latency. Deployment discipline is measured at the tail and under a budget — not on a warm benchmark.</p>
+
+  <h2>Honest limits — what this isn't</h2>
+  <ul class="limits">
+    <li>Designed for [N] concurrent users; above that, retries do the work, not scale.</li>
+    <li>Retrieval quality depends on the index; this write-up measures latency, not answer quality.</li>
+    <li>GPU credits are capped — long idle time means a cold restart, by design.</li>
+  </ul>
+
+  <div class="hero-cta">
+    <a class="btn" href="contact.html">Book 15 minutes to watch it ship live</a>
+  </div>
+
+  <h2>Other work (one line each)</h2>
+  <ul>
+    <li>sid.ai — deployed chatbot product</li>
+    <li>AI Email Assistant SaaS — FastAPI → Railway</li>
+    <li>Object Detection &amp; Segmentation — GPU server, Lightning AI</li>
+    <li>Internships — FlyRank AI (search intelligence), FDAI</li>
+  </ul>
+
+  <footer>Siddiq · <a href="contact.html">Book 15 minutes</a></footer>
+</body>
+</html>
