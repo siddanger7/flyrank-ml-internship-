@@ -37,4 +37,9 @@ Be specific, not encouraging.
 ---
 
 After the run, write down **at least one thing you'll change** (the assignment
-requires a noted change). Add it below the output in a plain note:
+requires a noted change). Change recorded (see `pressure_test_output.md`):
+
+**Fold `/about` into the bottom of the RAG case-study page and remove it as a
+standalone page** — the sitemap goes from 4 pages to 3, and the only page that
+did not move the co-founder toward the booking is gone.
+

@@ -5,9 +5,10 @@ Every artifact for the portfolio build ("AI n-able yourself") lives here.
 | File | What it is |
 |---|---|
 | `proof_statement.md` | The one claim, one person, one action + the honest why |
-| `sitemap.md` | The small sitemap (4 pages) + why each page earns its place |
+| `sitemap.md` | The small sitemap (3 pages after pressure-test) + why each page earns its place |
 | `claude_project_instructions.md` | Custom instructions to paste into the Claude Project |
 | `pressure_test_prompt.md` | The prompt to pressure-test the sitemap, run inside the Project |
+| `pressure_test_output.md` | The saved pressure-test answer + the recorded change |
 
 ## Deliverable checklist (submit on the Week-1 card)
 
@@ -15,5 +16,5 @@ Every artifact for the portfolio build ("AI n-able yourself") lives here.
 - [ ] Sitemap sketched (text here; photo/photo-drawing of the sketch for the card)
 - [ ] Free toolkit accounts: Claude, ChatGPT, Gemini, Perplexity
 - [ ] One Claude Project named `Internship Portfolio` with custom instructions (proof statement pasted in) + tutor role
-- [ ] Pressure-test prompt run; at least one change noted
+- [ ] Pressure-test prompt run; at least one change noted (recorded: `/about` folded into the case study, 4 → 3 pages)
 - [ ] Screenshot: configured Project + prompt + output
