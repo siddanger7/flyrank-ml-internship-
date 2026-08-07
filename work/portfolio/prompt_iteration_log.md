@@ -166,20 +166,43 @@ Each version applies exactly one named technique on top of the previous. Outputs
 
 **Output on Claude** (V5 output above; same model, same result — reproduced cleanly on re-run).
 
-**Output on ChatGPT:** (paste the final prompt into ChatGPT and add the reply here)
+**Output on ChatGPT** (verbatim, condensed to the final sections — it also printed its three-step working first):
+> **[1] Units and encoding traps**
+> - `client_hash_id`, `content_hash_id`, `url_hash_id`, and `keyword_hash_id` are scrambled IDs; join/group with them only.
+> - `ga4_data_available = FALSE` means tracking had not started, not zero sessions.
+> - Recreated product scores belong in baselines, not model features.
+>
+> **[2] Data availability and panel warnings**
+> - Daily facts end at **2026-06-30** because the newest 3 days were removed.
+> - Client histories start on different dates; check `gsc_data_start`/`ga4_data_start` before windowing.
+> - AI-session data is much sparser than search-performance data.
+> - Do not use the `_sample` table for future-label development.
+>
+> **[3] Label and leakage rules**
+> - Define labels from future outcomes.
+> - Never overlap feature and target windows.
+> - Never use future metrics or rebuilt product outputs as features.
+>
+> **[4] Validation that matches the decision**
+> - Use client holdout for client generalization.
+> - Use time-aware splits for future prediction.
+> - Use top-K metrics for ranked review queues.
+> - Run a leakage audit before trusting results.
 
 ---
 
 ## Cross-model comparison (Claude vs ChatGPT)
 
-| Dimension | Claude | ChatGPT | Note |
-|---|---|---|---|
-| Tone | Measured, hedged ("never rank one", "no binary classifier") | *to fill after run* | Watch: does it assert or hedge? |
-| Accuracy on traps (×100, avg_position==0, 1,205 rows) | All present and correct | *to fill* | The ×100 and 0-encoding are the accuracy canaries |
-| Structure adherence (4 sections, <300 words) | Follows exactly | *to fill* | Word cap is the easy test |
-| Failure points | Slightly over the word cap on re-runs; occasional extra bullet | *to fill* | What does each model drop? |
+| Dimension | Claude | ChatGPT |
+|---|---|---|
+| Tone | Measured, hedged ("never read it as rank one", "no binary classifier on AI sessions alone") | Assertive, states rules as absolutes ("Define labels from future outcomes") |
+| Accuracy on traps (×100, avg_position==0, 1,205 rows) | All three present and correct, with the number | **Both ×100 and avg_position==0 are missing** — the two traps most likely to produce wrong rankings. ChatGPT's "[1] Units and encoding traps" instead leads with scrambled join IDs, which are real but are the least dangerous item in the category |
+| Specificity of numbers | Carries them: 30,177 vs 78.8M daily rows; 1,205 rows; 2026-06-30 | Vague where Claude is specific: "AI-session data is much sparser" with no numbers; 2026-06-30 present |
+| Label / proxy awareness | Calls out `is_declining_label` as a proxy, not the capstone target | Omits `is_declining_label` entirely; also omits the "no causal claims (refresh → recovery)" rule |
+| Structure adherence | Follows the four sections; occasionally runs a few words over 300 on re-runs | Follows the four sections exactly AND prints its step-decomposition first — total output well over 300 words |
+| Failure points | Word-cap drift; occasional extra bullet | Missing the encoding canaries; fills space with low-value items; duplicated working output |
 
-*Specific finding so far (Claude):* strong on hedge accuracy but tends to run a few words over 300 on re-runs, so the cap needs to be "under 250" to land under 300. *(ChatGPT row fills in after the user run.)*
+**Verdict (specific, not "both fine"):** on this task ChatGPT is the more fluent writer and the worse note-taker. It nailed the structure and the panel warnings, but it dropped the two encoding traps (CTR ×100, avg_position == 0) that would actually produce wrong numbers in the intern's pipeline — and it wrote "sparser" where the numbers (30,177 vs 78.8M) would have made the point. Claude hedged more and carried the numbers. For a task whose whole point is "every pipeline-breaking warning must be concrete," the difference is decisive: Claude's output was the one I'd study from.
 
 ---
 
@@ -197,5 +220,5 @@ Use for turning any dense technical doc into working notes. Fill the brackets.
 - [x] Six runs (V0 naive + V1–V5), each tied to a named technique (role, context, few-shot, structure, decomposition)
 - [x] Notes describe observed output differences, not just prompt changes (V1 tone shift, V2 relevance jump, V3 shape-learning, V4 coverage gaps, V5 new warnings)
 - [x] Real task from FL-01 audit (Target Task C, using the actual lane guide)
-- [ ] Cross-model comparison completed (needs one ChatGPT run — the single open item)
+- [x] Cross-model comparison completed (Claude vs ChatGPT run on the same final prompt; see table above)
 - [x] Final template reusable without my personal context
