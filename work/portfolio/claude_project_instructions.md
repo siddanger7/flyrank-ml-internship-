@@ -29,6 +29,11 @@ running notebooks, so they'll book a 15-minute call to see a live endpoint.
   "results-driven", "harnessing the power of", "synergy". Write what happened,
   what I decided, what it cost, what it isn't.
 
+# Portfolio look (identity kit)
+- Fonts: Space Grotesk for headings, Inter for body.
+- Palette: paper #F7F6F2, ink #1A1917, main #1E4E79, accent #B0602E (used once per page).
+- Mood: quiet and technical — the work is the loudest thing on the page; styling gets out of the way.
+
 # Context that follows this build
 - Every assignment in this track is executed in my public repo:
   https://github.com/siddanger7/flyrank-ml-internship-
