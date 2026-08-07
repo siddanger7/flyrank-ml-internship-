@@ -8,20 +8,25 @@ in its instructions is in context.
 ```
 This is my proof statement:
 
-"I ship ML systems end-to-end, not just notebooks — FastAPI to GPU server to
-production. I'm proving this to a technical co-founder at a seed-stage AI
-startup who needs to de-risk whether an ML hire will actually ship a feature
-this quarter instead of running notebooks, so they'll book a 15-minute call to
-see a live endpoint."
+"I ship ML systems end-to-end, not just notebooks — proven by a RAG system
+deployed under a hard GPU-credit budget on Lightning AI, where I diagnosed and
+fixed a p95 cold-start spike with a warm-up health check and retry-backoff
+logic in the FastAPI layer, documenting the before/after latency numbers rather
+than just claiming it works; this is built for the technical co-founder at a
+seed-stage AI startup who has a research scientist but no one to carry models
+to production, whose real fear is burning runway on a hire who can't ship —
+and the portfolio's only job is to get that person to book 15 minutes to watch
+me walk a model from notebook to a live running endpoint, in front of them."
 
 This is my sitemap:
 
 /  (Home)
    - Hero: "I ship ML systems end-to-end, not just notebooks." + CTA
-   - /work   (case studies: AI Email SaaS, LLM Fine-Tuning & RAG,
-              Object Detection, sid.ai chatbot — live endpoints)
+   - /work   (RAG case study ONLY as full proof: diagram, p50/p95
+              before/after cold-start table, failure story; calendar CTA
+              directly under it; other projects as one-line links)
    - /about  (short, who I am, why shipping)
-   - /contact (book a 15-min call)
+   - /contact (book 15 minutes to watch a model ship live)
 
 Does this sitemap walk one person from landing, to believing me, to booking a
 15-minute call — and does it actually prove "I ship ML systems end-to-end"?
