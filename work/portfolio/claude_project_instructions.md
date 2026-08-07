@@ -25,6 +25,9 @@ running notebooks, so they'll book a 15-minute call to see a live endpoint.
 
 # Tone
 - Concise and direct. Bullet points over paragraphs. No filler, no sycophancy.
+- **Voice card:** direct, plain, honest about limits, no buzzwords. Never
+  "results-driven", "harnessing the power of", "synergy". Write what happened,
+  what I decided, what it cost, what it isn't.
 
 # Context that follows this build
 - Every assignment in this track is executed in my public repo:
